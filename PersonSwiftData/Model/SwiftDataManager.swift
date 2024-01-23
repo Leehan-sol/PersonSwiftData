@@ -17,10 +17,13 @@ class SwiftDataManager {
     @MainActor func createPerson(name: String, age: String) {
         let person = Person(name: name, age: age)
         
-        // container?.mainContext.insert(memo)를 사용하여 메모를 데이터베이스에 추가
-        container?.mainContext.insert(person)
+        do {
+            container?.mainContext.insert(person)
+            try container?.mainContext.save()
+        } catch {
+            print("생성 실패: \(error.localizedDescription)")
+        }
     }
-    
     
     // Read
     @MainActor func getPerson() -> [Person] {
@@ -55,10 +58,16 @@ class SwiftDataManager {
     }
 
     
-    
     // Delete
     @MainActor func deletePerson(person: Person) {
         container?.mainContext.delete(person)
+        
+        do {
+            try container?.mainContext.save()
+        } catch {
+            print("삭제 실패: \(error.localizedDescription)")
+        }
     }
+
     
 }
