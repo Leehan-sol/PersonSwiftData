@@ -10,7 +10,7 @@ import UIKit
 class ListViewController: UIViewController {
     
     private let listView = ListView()
-//    private var personList: [PersonCoreData]!
+    private var personList: [Person]!
     
     override func loadView() {
         view = listView
@@ -28,7 +28,7 @@ class ListViewController: UIViewController {
     }
     
     private func setPersonList() {
-//        personList = CoreDataManager.shared.getPerson()
+        personList = SwiftDataManager.shared.getPerson()
     }
 }
 
@@ -38,16 +38,16 @@ extension ListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            if let person = personList?[indexPath.row] {
-//                CoreDataManager.shared.deletePerson(person: person)
+            if let person = personList?[indexPath.row] {
+                SwiftDataManager.shared.deletePerson(person: person)
                 setPersonList()
-//            }
+            }
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1//personList.count
+        return personList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -55,13 +55,13 @@ extension ListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-//        cell.nameLabel.text = personList[indexPath.row].name
-//        cell.ageLabel.text = personList[indexPath.row].age
+        cell.nameLabel.text = personList[indexPath.row].name
+        cell.ageLabel.text = personList[indexPath.row].age
         
-//        cell.editButtonClosure = { [weak self] in
-//            guard let self = self else { return }
-//            self.showAlert(index: indexPath.row)
-//        }
+        cell.editButtonClosure = { [weak self] in
+            guard let self = self else { return }
+            self.showAlert(index: indexPath.row)
+        }
         
         return cell
     }
@@ -89,7 +89,7 @@ extension ListViewController: UITableViewDataSource {
                 return
             }
             
-//            CoreDataManager.shared.updatePerson(name: newName, age: newAge, index: index)
+            SwiftDataManager.shared.updatePerson(name: newName, age: newAge, index: index)
             self.listView.tableView.reloadData()
         }
         

@@ -11,7 +11,6 @@ import SwiftData
 class SwiftDataManager {
     static var shared = SwiftDataManager()
     var container = try? ModelContainer(for: Person.self)
-    var persons: [Person] = []
     
     
     // Create
@@ -20,27 +19,46 @@ class SwiftDataManager {
         
         // container?.mainContext.insert(memo)를 사용하여 메모를 데이터베이스에 추가
         container?.mainContext.insert(person)
-        
     }
     
+    
     // Read
-    @MainActor func loadPerson() {
+    @MainActor func getPerson() -> [Person] {
         // FetchDescriptor를 사용하여 Person 엔터티의 데이터를 가져옴
         let descriptor = FetchDescriptor<Person>()
         
         // container?.mainContext.fetch(descriptor)를 통해 데이터베이스에서 메모를 가져옴
-        persons = (try? container?.mainContext.fetch(descriptor)) ?? []
-        
+        let persons = (try? container?.mainContext.fetch(descriptor)) ?? []
+        return persons
     }
     
+    
     // Update
+    @MainActor func updatePerson(name: String, age: String, index: Int) {
+        let descriptor = FetchDescriptor<Person>()
+        
+        do {
+            guard let result = try container?.mainContext.fetch(descriptor) else {
+                return
+            }
+            
+            if index < result.count {
+                let personObject = result[index]
+                personObject.name = name
+                personObject.age = age
+                
+                try container?.mainContext.save()
+            }
+        } catch {
+            print("수정실패: \(error.localizedDescription)")
+        }
+    }
+
     
     
     // Delete
-    @MainActor func deletePerson() {
-        if let lastPerson = persons.last {
-            container?.mainContext.delete(lastPerson)
-        }
+    @MainActor func deletePerson(person: Person) {
+        container?.mainContext.delete(person)
     }
     
 }
