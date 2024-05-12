@@ -1,5 +1,5 @@
 ## ⚙️ SwiftData
-`Xcode beta 15.0` `iOS beta 17.0` `Swift 5.9` 이상부터 사용 가능한 데이터 모델링 및 관리를 위한 프레임워크입니다. <br/>
+`Xcode beta 15.0` `iOS beta 17.0` `Swift 5.9` 이상부터 사용 가능한 데이터 모델링 및 관리를 위한 라이브러리입니다. <br/>
 Core Data와 비슷한 개념으로 Swift를 사용해 더 쉽게 데이터를 관리할 수 있고, SwiftUI에 최적화되어있습니다.
 
 <br/>
